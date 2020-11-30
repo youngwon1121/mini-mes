@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/process', [ProcessController::class, 'store']);
+Route::get('/process', [ProcessController::class, 'index']);
+Route::put('/process/{process}/flow', [ProcessController::class, 'setFlow']);
