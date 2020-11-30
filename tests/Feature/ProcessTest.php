@@ -4,34 +4,93 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Process;
 
 class ProcessTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testAddProcess()
+    use RefreshDatabase;
+
+    public function testAddAndReadProcess()
     {
-        $response = $this->post('/api/process', [
+        $this->postJson('/api/process', [
             'name' => 'NCT',
-        ]);
-        $response
-            ->assertStatus(200)
+        ])->assertStatus(201)
             ->assertJson([
-                'result' => 'SUCCESS',
+                'message' => 'success',
                 'data' => [
-                    'name' => 'NCT',    
+                    'name' => 'NCT',
                 ]
             ]);
 
-        $response = $this->postJson('/api/process', []);
-        $response
+            
+        $this->getJson('/api/process')
+        ->assertStatus(200)
+        ->assertJson([
+            'data' => [
+                [
+                    'name' => 'NCT'
+                ],
+            ]
+        ]);
+
+
+        $this->postJson('/api/process', [])
             ->assertStatus(422)
             ->assertJson([
-                'result' => 'FAIL',
-                'message' => 'name is required.'
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'name' => [
+                        'The name field is required.'
+                    ]
+                ]
             ]);
+    }
+
+
+    public function testProcessSetFlow()
+    {
+        Process::factory()->count(3)->create();
+
+        $this->putJson('/api/process/1/flow', [
+            'next' => [2],
+        ])->assertStatus(200)->assertJson([
+            'message' => 'success',
+        ]);
+
+        $this->putJson('/api/process/2/flow', [
+            'next' => [3],
+        ])->assertStatus(200)->assertJson([
+            'message' => 'success',
+        ]);
+
+        $this->getJson('/api/process')
+        ->assertStatus(200)
+        ->assertJson([
+            'data' => [
+                [
+                    'id' => 1,
+                    'next' => [2],
+                ],
+                [
+                    'id' => 2,
+                    'next' => [3],
+                ],
+                [
+                    'id' => 3,
+                    'next' => [],
+                ],
+            ]
+        ]);
+
+        $this->putJson('/api/process/1/flow')
+        ->assertStatus(422);
+
+        $this->putJson('/api/process/1/flow', [
+            'next' => 2,
+        ])->assertStatus(422);
+
+        $this->putJson('/api/process/1/flow', [
+            'next' => [1]
+        ])->assertStatus(422);
     }
 }
