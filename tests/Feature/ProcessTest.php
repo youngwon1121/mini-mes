@@ -22,8 +22,8 @@ class ProcessTest extends TestCase
             'name' => 'NCT',
         ])->assertStatus(201)
             ->assertJson([
-                    'message' => 'success',
-            'data' => [
+                'message' => 'success',
+                'data' => [
                     'name' => 'NCT',
                 ],
             ]);
