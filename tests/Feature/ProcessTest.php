@@ -89,15 +89,40 @@ class ProcessTest extends TestCase
             ]
         ]);
 
+        
         $this->putJson('/api/process/1/flow')
-        ->assertStatus(422);
+        ->assertStatus(422)
+        ->assertJson([
+            'message' => 'The given data was invalid.',
+            'errors' => [
+                'next' => [
+                    'The next field is required.'
+                ]
+            ]
+        ]);
 
         $this->putJson('/api/process/1/flow', [
             'next' => 2,
-        ])->assertStatus(422);
+        ])->assertStatus(422)
+        ->assertJson([
+            'message' => 'The given data was invalid.',
+            'errors' => [
+                'next' => [
+                    'The next must be an array.'
+                ]
+            ]
+        ]);
 
         $this->putJson('/api/process/1/flow', [
             'next' => [1]
-        ])->assertStatus(422);
+        ])->assertStatus(422)
+        ->assertJson([
+            'message' => 'The given data was invalid.',
+            'errors' => [
+                'next' => [
+                    "can't set itself to next"
+                ]
+            ]
+        ]);
     }
 }
