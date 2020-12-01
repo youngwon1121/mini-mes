@@ -13,8 +13,7 @@ class ProcessSetFlow extends FormRequest
                 'bail',
                 'required',
                 'array',
-                function ($attribute, $value, $fail)
-                {
+                function ($attribute, $value, $fail) {
                     if (in_array(request()->process->id, $value)) {
                         $fail("can't set itself to next");
                     }
