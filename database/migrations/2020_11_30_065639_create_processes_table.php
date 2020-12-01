@@ -14,14 +14,12 @@ class CreateProcessesTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'processes', function (Blueprint $table) {
-                $table->id();
-                $table->string('name');
-                $table->json('next')->default(new Expression('(JSON_ARRAY())'));
-                $table->timestamps();
-            }
-        );
+        Schema::create('processes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->json('next')->default(new Expression('(JSON_ARRAY())'));
+            $table->timestamps();
+        });
     }
 
     /**

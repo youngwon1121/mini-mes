@@ -9,8 +9,7 @@ use App\Models\Process;
 
 class ProcessController extends Controller
 {
-    public function store(ProcessStore $request)
-    {
+    public function store(ProcessStore $request) {
         $process = Process::create(['name' => $request->name]);
         $response = [
             'message' => 'success',
@@ -19,8 +18,7 @@ class ProcessController extends Controller
         return response($response, 201);
     }
 
-    public function index()
-    {
+    public function index() {
         $processes = Process::all();
         $response = [
             'data' => $processes
@@ -28,8 +26,7 @@ class ProcessController extends Controller
         return $response;
     }
 
-    public function setFlow(ProcessSetFlow $request, Process $process)
-    {
+    public function setFlow(ProcessSetFlow $request, Process $process) {
         $process->next = $request->next;
         $process->save();
 
