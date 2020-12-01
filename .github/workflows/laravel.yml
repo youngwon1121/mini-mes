@@ -13,6 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, intl, sqlite3, pdo_sqlite
+        ini-values: post_max_size=256M, max_execution_time=180
+        coverage: xdebug    
+        tools: phpunit
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
@@ -29,4 +37,9 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --coverage-html reports/
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: reports/
