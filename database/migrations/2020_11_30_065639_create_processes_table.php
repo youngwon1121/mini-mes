@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Query\Expression;
 
 class CreateProcessesTable extends Migration
 {
@@ -14,14 +14,12 @@ class CreateProcessesTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'processes', function (Blueprint $table) {
-                $table->id();
-                $table->string('name');
-                $table->json('next')->default(new Expression('(JSON_ARRAY())'));
-                $table->timestamps();
-            }
-        );
+        Schema::create('processes', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->json('next')->default(new Expression('(JSON_ARRAY())'));
+            $table->timestamps();
+        });
     }
 
     /**

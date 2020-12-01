@@ -11,6 +11,6 @@ class Process extends Model
 
     protected $fillable = ['name'];
     protected $casts = [
-        'next' => 'array'
+        'next' => 'array',
     ];
 }

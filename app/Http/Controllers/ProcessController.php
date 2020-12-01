@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\ProcessStore;
 use App\Http\Requests\ProcessSetFlow;
+use App\Http\Requests\ProcessStore;
 use App\Models\Process;
 
 class ProcessController extends Controller
@@ -14,8 +13,9 @@ class ProcessController extends Controller
         $process = Process::create(['name' => $request->name]);
         $response = [
             'message' => 'success',
-            'data' => $process->toArray()
+            'data' => $process->toArray(),
         ];
+
         return response($response, 201);
     }
 
@@ -23,8 +23,9 @@ class ProcessController extends Controller
     {
         $processes = Process::all();
         $response = [
-            'data' => $processes
+            'data' => $processes,
         ];
+
         return $response;
     }
 
