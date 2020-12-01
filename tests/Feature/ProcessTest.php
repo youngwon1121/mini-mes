@@ -2,16 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Models\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\Process;
 
 class ProcessTest extends TestCase
 {
     use RefreshDatabase;
 
-
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->handleValidationExceptions();
@@ -26,20 +25,18 @@ class ProcessTest extends TestCase
                 'message' => 'success',
                 'data' => [
                     'name' => 'NCT',
-                ]
+                ],
             ]);
 
-            
         $this->getJson('/api/process')
         ->assertStatus(200)
         ->assertJson([
             'data' => [
                 [
-                    'name' => 'NCT'
+                    'name' => 'NCT',
                 ],
-            ]
+            ],
         ]);
-
 
         $this->postJson('/api/process', [])
             ->assertStatus(422)
@@ -47,12 +44,11 @@ class ProcessTest extends TestCase
                 'message' => 'The given data was invalid.',
                 'errors' => [
                     'name' => [
-                        'The name field is required.'
-                    ]
-                ]
+                        'The name field is required.',
+                    ],
+                ],
             ]);
     }
-
 
     public function testProcessSetFlow()
     {
@@ -86,19 +82,18 @@ class ProcessTest extends TestCase
                     'id' => 3,
                     'next' => [],
                 ],
-            ]
+            ],
         ]);
 
-        
         $this->putJson('/api/process/1/flow')
         ->assertStatus(422)
         ->assertJson([
             'message' => 'The given data was invalid.',
             'errors' => [
                 'next' => [
-                    'The next field is required.'
-                ]
-            ]
+                    'The next field is required.',
+                ],
+            ],
         ]);
 
         $this->putJson('/api/process/1/flow', [
@@ -108,21 +103,21 @@ class ProcessTest extends TestCase
             'message' => 'The given data was invalid.',
             'errors' => [
                 'next' => [
-                    'The next must be an array.'
-                ]
-            ]
+                    'The next must be an array.',
+                ],
+            ],
         ]);
 
         $this->putJson('/api/process/1/flow', [
-            'next' => [1]
+            'next' => [1],
         ])->assertStatus(422)
         ->assertJson([
             'message' => 'The given data was invalid.',
             'errors' => [
                 'next' => [
-                    "can't set itself to next"
-                ]
-            ]
+                    "can't set itself to next",
+                ],
+            ],
         ]);
     }
 }
