@@ -17,8 +17,8 @@ class ProcessSetFlow extends FormRequest
                     if (in_array(request()->process->id, $value)) {
                         $fail("can't set itself to next");
                     }
-                }
-            ]
+                },
+            ],
         ];
     }
 }
