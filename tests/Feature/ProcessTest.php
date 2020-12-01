@@ -10,6 +10,13 @@ class ProcessTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    public function setUp() : void
+    {
+        parent::setUp();
+        $this->handleValidationExceptions();
+    }
+
     public function testAddAndReadProcess()
     {
         $this->postJson('/api/process', [
